@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 
-const int SCREEN_WIDTH = 600;
+const int SCREEN_WIDTH =500;
 const int SCREEN_HEIGHT = 750;
 const int GRAVITY = 1;
 const int JUMP_STRENGTH=-15;
@@ -46,5 +46,25 @@ int main(int argc, char* argv[]) {
     birdX = (SCREEN_WIDTH - gBird->w) / 2;
     birdY = (SCREEN_HEIGHT - gBird->h) / 2;
 
+    SDL_Event e;
+    bool quit = false;
+    while (!quit) {
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT) quit = true;
+            if (e.type == SDL_MOUSEBUTTONDOWN) {
+                birdVelocityY = JUMP_STRENGTH;
+            }
+        }
+
+        birdVelocityY+= GRAVITY;
+        birdY += birdVelocityY;
+
+        if (birdY < 0) birdY = 0;
+        if (birdY > SCREEN_HEIGHT - gBird->h) quit = true;
+        render();
+        SDL_Delay(16);
+    }
+
+    close();
     return 0;
 }
