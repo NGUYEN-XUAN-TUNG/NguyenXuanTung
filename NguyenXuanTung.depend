@@ -1,6 +1,7 @@
 # depslib dependency file v1.0
-1742911790 source:d:\codeblocks\qe\obj\nguyenxuantung\main.cpp
+1742912202 source:d:\codeblocks\qe\obj\nguyenxuantung\main.cpp
 	<SDL.h>
+	<iostream>
 	<SDL_image.h>
 	<cstdlib>
 	<ctime>
