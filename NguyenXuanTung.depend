@@ -1,3 +1,4 @@
+
 # depslib dependency file v1.0
 1742983998 source:d:\codeblocks\qe\obj\nguyenxuantung\main.cpp
 	<SDL.h>
@@ -452,6 +453,7 @@
 	"SDL_version.h"
 	"begin_code.h"
 	"close_code.h"
+
 
 1742973591 source:d:\codeblocks\nguyenxuantung\main.cpp
 	<SDL.h>

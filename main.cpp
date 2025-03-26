@@ -8,7 +8,7 @@ const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = 800;
 const int GRAVITY = 1;
 const int JUMP_STRENGTH = -15;
-const int CHECK_POINT = SCREEN_HEIGHT / 2 -100;
+const int CHECK_POINT = SCREEN_HEIGHT / 2 - 100;
 const int OBSTACLE_SPEED = 5;
 const int NUMBER_OF_OBSTACLE = 2;
 
@@ -111,13 +111,16 @@ int main(int argc, char* args[]) {
             birdY = CHECK_POINT;
             obstacleRect.y += OBSTACLE_SPEED;
         }
+
         if (birdY > SCREEN_HEIGHT) quit = true;
         if (obstacleRect.y > SCREEN_HEIGHT) {
             gCurrentObstacleTexture = gObstacleTextures[rand() % NUMBER_OF_OBSTACLE];
+
             SDL_QueryTexture(gCurrentObstacleTexture, NULL, NULL, &w, &h);
 
             obstacleRect = {(SCREEN_WIDTH - w) / 2, -h, w, h};
 
+            lastBirdY = birdY;
         }
 
         lastBirdY = birdY;
