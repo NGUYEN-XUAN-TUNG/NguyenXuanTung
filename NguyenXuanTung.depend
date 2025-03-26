@@ -1,9 +1,10 @@
 # depslib dependency file v1.0
-1742926162 source:d:\codeblocks\qe\obj\nguyenxuantung\main.cpp
+1742983998 source:d:\codeblocks\qe\obj\nguyenxuantung\main.cpp
 	<SDL.h>
 	<SDL_image.h>
 	<cstdlib>
 	<ctime>
+	<iostream>
 
 1738454558 c:\users\admin\downloads\sdl2-2.30.12\x86_64-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"

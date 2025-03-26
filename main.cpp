@@ -8,14 +8,16 @@ const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = 800;
 const int GRAVITY = 1;
 const int JUMP_STRENGTH = -15;
-const int CHECK_POINT = SCREEN_HEIGHT / 2-100;
+const int CHECK_POINT = SCREEN_HEIGHT / 2 -100;
 const int OBSTACLE_SPEED = 5;
+const int NUMBER_OF_OBSTACLE = 2;
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 SDL_Texture* gBirdTexture = NULL;
 SDL_Texture* gBackgroundTexture = NULL;
-SDL_Texture* gObstacleTexture = NULL;
+SDL_Texture* gObstacleTextures[NUMBER_OF_OBSTACLE];
+SDL_Texture* gCurrentObstacleTexture = NULL;
 
 // Bird
 int birdX, birdY;
@@ -30,7 +32,9 @@ float rotationAngle = 0.0f;
 void close() {
     SDL_DestroyTexture(gBirdTexture);
     SDL_DestroyTexture(gBackgroundTexture);
-    SDL_DestroyTexture(gObstacleTexture);
+    for (int i = 0; i < NUMBER_OF_OBSTACLE; i++) {
+        SDL_DestroyTexture(gObstacleTextures[i]);
+    }
     SDL_DestroyRenderer(gRenderer);
     SDL_DestroyWindow(gWindow);
     IMG_Quit();
@@ -46,18 +50,18 @@ SDL_Texture* loadTexture(const char* filename) {
 void render() {
     SDL_RenderClear(gRenderer);
 
-    SDL_Rect BackgroundRect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+    SDL_Rect BackgroundRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
     SDL_RenderCopy(gRenderer, gBackgroundTexture, NULL, &BackgroundRect);
 
-    SDL_Rect BirdPos = { birdX, birdY, 45, 45 };
+    SDL_Rect BirdPos = {birdX, birdY, 40, 40};
     SDL_RenderCopy(gRenderer, gBirdTexture, NULL, &BirdPos);
 
     int w, h;
-    SDL_QueryTexture(gObstacleTexture, NULL, NULL, &w, &h);
-    SDL_Rect obstacleScaled = { obstacleRect.x, obstacleRect.y, w, h };
-    SDL_Point center = { w / 2, h / 2 };
-    SDL_RenderCopyEx(gRenderer, gObstacleTexture, NULL, &obstacleScaled, rotationAngle, &center, SDL_FLIP_NONE);
-    rotationAngle += 2.0f;
+    SDL_QueryTexture(gCurrentObstacleTexture, NULL, NULL, &w, &h);
+    SDL_Rect obstacleScaled = {obstacleRect.x, obstacleRect.y, w, h};
+    SDL_Point center = {w / 2, h / 2};
+    SDL_RenderCopyEx(gRenderer, gCurrentObstacleTexture, NULL, &obstacleScaled, rotationAngle, &center, SDL_FLIP_NONE);
+    rotationAngle += 1.5f;
 
     SDL_RenderPresent(gRenderer);
 }
@@ -70,16 +74,18 @@ int main(int argc, char* args[]) {
 
     gBackgroundTexture = loadTexture("background-night.png");
     gBirdTexture = loadTexture("beach-ball.png");
-    gObstacleTexture = loadTexture("obstacle 01.png");
+    gObstacleTextures[0] = loadTexture("obstacle 01.png");
+    gObstacleTextures[1] = loadTexture("obstacle 02.png");
+    gCurrentObstacleTexture = gObstacleTextures[rand() % 2];
 
-    birdX = (SCREEN_WIDTH - 45) / 2;
+    birdX = (SCREEN_WIDTH - 40) / 2;
     birdY = 600;
     lastBirdY = birdY;
     maxBirdY = birdY;
 
     int w, h;
-    SDL_QueryTexture(gObstacleTexture, NULL, NULL, &w, &h);
-    obstacleRect = { (SCREEN_WIDTH - w) / 2, -10, w, h };
+    SDL_QueryTexture(gCurrentObstacleTexture, NULL, NULL, &w, &h);
+    obstacleRect = {(SCREEN_WIDTH - w) / 2, -h, w, h};
 
     SDL_Event e;
     bool quit = false;
@@ -95,7 +101,6 @@ int main(int argc, char* args[]) {
         birdVelocityY += GRAVITY;
         birdY += birdVelocityY;
 
-
         int deltaY = lastBirdY - birdY;
         if (deltaY > 0 && birdY < maxBirdY) {
             maxBirdY = birdY;
@@ -104,10 +109,16 @@ int main(int argc, char* args[]) {
 
         if (birdY < CHECK_POINT) {
             birdY = CHECK_POINT;
-            obstacleRect.y+=OBSTACLE_SPEED;
+            obstacleRect.y += OBSTACLE_SPEED;
         }
-
         if (birdY > SCREEN_HEIGHT) quit = true;
+        if (obstacleRect.y > SCREEN_HEIGHT) {
+            gCurrentObstacleTexture = gObstacleTextures[rand() % NUMBER_OF_OBSTACLE];
+            SDL_QueryTexture(gCurrentObstacleTexture, NULL, NULL, &w, &h);
+
+            obstacleRect = {(SCREEN_WIDTH - w) / 2, -h, w, h};
+
+        }
 
         lastBirdY = birdY;
 
