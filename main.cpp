@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+using namespace std;
 
 const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = 800;
@@ -28,6 +29,22 @@ int maxBirdY;
 // Obstacle
 SDL_Rect obstacleRect;
 float rotationAngle = 0.0f;
+
+bool init() {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        cout << "ERROR" << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        cout << "ERROR" << IMG_GetError() << std::endl;
+        return false;
+    }
+    gWindow = SDL_CreateWindow("Flappy Bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+    return true;
+}
+
 
 void close() {
     SDL_DestroyTexture(gBirdTexture);
@@ -68,9 +85,9 @@ void render() {
 
 int main(int argc, char* args[]) {
     srand(time(0));
-
-    gWindow = SDL_CreateWindow("Flappy Bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+    if (!init()) {
+        return -1;
+    }
 
     gBackgroundTexture = loadTexture("background-night.png");
     gBirdTexture = loadTexture("beach-ball.png");
