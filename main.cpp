@@ -18,7 +18,9 @@ SDL_Renderer* gRenderer = NULL;
 SDL_Texture* gBirdTexture = NULL;
 SDL_Texture* gBackgroundTexture = NULL;
 SDL_Texture* gObstacleTextures[NUMBER_OF_OBSTACLE];
-SDL_Texture* gCurrentObstacleTexture = NULL;
+SDL_Texture* gCurrentObstacleTexture = NULL;\
+SDL_Texture* gFlyAnimationTexture=NULL;
+
 
 // Bird
 int birdX, birdY;
@@ -26,9 +28,18 @@ int birdVelocityY = 0;
 int lastBirdY;
 int maxBirdY;
 
+//Fly Animation
+int FlyAnimationX,FlyAnimationY;
+bool ShowFlyAnimation=false;
+int FlyAnimationTimer=0;
+
 // Obstacle
 SDL_Rect obstacleRect;
 float rotationAngle = 0.0f;
+
+bool CheckCollision(SDL_Rect a, SDL_Rect b) {
+    return (a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y);
+}
 
 bool init() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -49,6 +60,7 @@ bool init() {
 void close() {
     SDL_DestroyTexture(gBirdTexture);
     SDL_DestroyTexture(gBackgroundTexture);
+    SDL_DestroyTexture(gFlyAnimationTexture);
     for (int i = 0; i < NUMBER_OF_OBSTACLE; i++) {
         SDL_DestroyTexture(gObstacleTextures[i]);
     }
@@ -59,8 +71,18 @@ void close() {
 }
 
 SDL_Texture* loadTexture(const char* filename) {
-    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);
-    SDL_Texture* texture = IMG_LoadTexture(gRenderer, filename);
+    SDL_Surface* loadedSurface = IMG_Load(filename);
+    if (!loadedSurface) {
+        cout << "Failed to load image: " << IMG_GetError() << endl;
+        return nullptr;
+    }
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    SDL_FreeSurface(loadedSurface);
+    if (!texture) {
+        cout << "Failed to create texture: " << SDL_GetError() << endl;
+        return nullptr;
+    }
+    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
     return texture;
 }
 
@@ -72,6 +94,11 @@ void render() {
 
     SDL_Rect BirdPos = {birdX, birdY, 40, 40};
     SDL_RenderCopy(gRenderer, gBirdTexture, NULL, &BirdPos);
+
+    if(ShowFlyAnimation){
+    SDL_Rect FlyAnimationPos = {FlyAnimationX, FlyAnimationY, 40, 40};
+    SDL_RenderCopy(gRenderer, gFlyAnimationTexture, NULL, &FlyAnimationPos);
+    }
 
     int w, h;
     SDL_QueryTexture(gCurrentObstacleTexture, NULL, NULL, &w, &h);
@@ -91,6 +118,7 @@ int main(int argc, char* args[]) {
 
     gBackgroundTexture = loadTexture("background-night.png");
     gBirdTexture = loadTexture("beach-ball.png");
+    gFlyAnimationTexture=loadTexture("fly-animation.png");
     gObstacleTextures[0] = loadTexture("obstacle 01.png");
     gObstacleTextures[1] = loadTexture("obstacle 02.png");
     gCurrentObstacleTexture = gObstacleTextures[rand() % 2];
@@ -112,11 +140,22 @@ int main(int argc, char* args[]) {
             if (e.type == SDL_QUIT) quit = true;
             if (e.type == SDL_MOUSEBUTTONDOWN) {
                 birdVelocityY = JUMP_STRENGTH;
+                ShowFlyAnimation=true;
+                FlyAnimationTimer=10;
             }
         }
 
         birdVelocityY += GRAVITY;
         birdY += birdVelocityY;
+
+
+        FlyAnimationX = birdX;
+        FlyAnimationY = birdY + 40;
+         if (FlyAnimationTimer > 0) {
+            FlyAnimationTimer--;
+        } else {
+            ShowFlyAnimation = false;
+        }
 
         int deltaY = lastBirdY - birdY;
         if (deltaY > 0 && birdY < maxBirdY) {
@@ -129,15 +168,22 @@ int main(int argc, char* args[]) {
             obstacleRect.y += OBSTACLE_SPEED;
         }
 
-        if (birdY > SCREEN_HEIGHT) quit = true;
+        if (birdY > SCREEN_HEIGHT) {
+                cout << "Game Over!" << endl;
+                quit = true;
+        }
         if (obstacleRect.y > SCREEN_HEIGHT) {
             gCurrentObstacleTexture = gObstacleTextures[rand() % NUMBER_OF_OBSTACLE];
-
             SDL_QueryTexture(gCurrentObstacleTexture, NULL, NULL, &w, &h);
-
             obstacleRect = {(SCREEN_WIDTH - w) / 2, -h, w, h};
-
             lastBirdY = birdY;
+        }
+
+        SDL_Rect birdRect = {birdX, birdY, 40, 40};
+        SDL_Rect obstacleRectScaled = {obstacleRect.x, obstacleRect.y, w, h};
+        if (CheckCollision(birdRect, obstacleRectScaled)) {
+            cout << "Game Over!" << endl;
+            quit = true;
         }
 
         lastBirdY = birdY;
