@@ -169,8 +169,9 @@ int main(int argc, char* args[]) {
         }
 
         if (birdY > SCREEN_HEIGHT) {
-                cout << "Game Over!" << endl;
-                quit = true;
+                birdY = SCREEN_HEIGHT-50;
+               // cout << "Game Over!" << endl;
+                //quit = true;
         }
         if (obstacleRect.y > SCREEN_HEIGHT) {
             gCurrentObstacleTexture = gObstacleTextures[rand() % NUMBER_OF_OBSTACLE];
