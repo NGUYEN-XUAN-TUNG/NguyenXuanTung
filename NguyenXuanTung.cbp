@@ -40,8 +40,11 @@
 			<Add directory="C:/Users/admin/Downloads/SDL2-2.30.12/x86_64-w64-mingw32/lib" />
 			<Add directory="C:/Users/admin/Downloads/sdl/lib" />
 		</Linker>
+		<Unit filename="ObstacleDot.h" />
+		<Unit filename="game.h" />
 		<Unit filename="init.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="render.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

@@ -1,7 +1,7 @@
 #include "init.h"
 #include "game.h"
 #include "render.h"
-
+#include"ObstacleDot.h"
 int main(int argc, char* args[]) {
     if (!initGame()) return -1;
 
@@ -17,8 +17,8 @@ int main(int argc, char* args[]) {
                 FlyAnimationTimer = 10;
             }
         }
-
         updateGame();
+        if(isover) quit=true;
         render();
         SDL_Delay(16);
     }
@@ -26,3 +26,4 @@ int main(int argc, char* args[]) {
     closeGame();
     return 0;
 }
+

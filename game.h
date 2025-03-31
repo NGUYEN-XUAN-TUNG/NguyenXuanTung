@@ -1,6 +1,16 @@
+
 #ifndef GAME_H
 #define GAME_H
 #include "init.h"
+#include "ObstacleDot.h"
+bool isover=false;
+
+
+
+bool CheckCollision(SDL_Rect a, SDL_Rect b) {
+    return (a.x < b.x + b.w && a.x + a.w > b.x &&
+            a.y < b.y + b.h && a.y + a.h > b.y);
+}
 
 void updateGame() {
     birdVelocityY += GRAVITY;
@@ -17,35 +27,31 @@ void updateGame() {
     int deltaY = lastBirdY - birdY;
     if (deltaY > 0 && birdY < maxBirdY) {
         maxBirdY = birdY;
-        obstacleRect.y += deltaY;
+        squareOffsetY += FALL_SPEED;
     }
 
-    if (birdY < CHECK_POINT) {
+    if (birdY < CHECK_POINT)  {
         birdY = CHECK_POINT;
-        obstacleRect.y += OBSTACLE_SPEED;
+        squareOffsetY += FALL_SPEED;
     }
 
     if (birdY > SCREEN_HEIGHT) {
         birdY = SCREEN_HEIGHT - 50;
     }
 
-    if (obstacleRect.y > SCREEN_HEIGHT) {
-        gCurrentObstacleTexture = gObstacleTextures[rand() % NUMBER_OF_OBSTACLE];
-        int w, h;
-        SDL_QueryTexture(gCurrentObstacleTexture, NULL, NULL, &w, &h);
-        obstacleRect = {(SCREEN_WIDTH - w) / 2, -h, w, h};
-        lastBirdY = birdY;
-    }
-
     SDL_Rect birdRect = {birdX, birdY, 40, 40};
-    SDL_Rect obstacleRectScaled = {obstacleRect.x, obstacleRect.y, obstacleRect.w, obstacleRect.h};
-    if (CheckCollision(birdRect, obstacleRectScaled)) {
-        cout << "Game Over!" << endl;
-        exit(0);
+    for (const auto& dot : dots) {
+        if (CheckCollision(birdRect, getDotRect(dot))) {
+            cout << "Game Over!" << endl;
+            isover = true;
+        }
     }
 
+    // Nếu obstacle đi xuống quá màn hình thì reset lại vị trí
+    if (squareOffsetY > SCREEN_HEIGHT-200) {
+        resetObstacle();
+    }
     lastBirdY = birdY;
 }
 
 #endif
-
