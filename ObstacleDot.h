@@ -1,6 +1,7 @@
 #ifndef OBSTACLEDOT_H
 #define OBSTACLEDOT_H
 #include"init.h"
+#include<cmath>
 //obs1
 const int SQUARE_SIZE = 250;
 const int DOT_SIZE = 40;
@@ -10,6 +11,10 @@ const float FALL_SPEED = 5.0f;
 const float RADIUS=150;
 const float PI=3.14159f;
 const int OTHER_DOT_SIZE=20;
+
+
+
+
 
 
 struct Dot1 {
@@ -73,7 +78,7 @@ SDL_Rect getDotRect1(const Dot1& dot) {
 }
 
 //obs2
-/*struct Dot2{
+struct Dot2{
     float x,y;
     float angle;
     int size;
@@ -84,8 +89,8 @@ float circleOffSetY = -2 * RADIUS - 100;
 void initializeDots(float centerX, float centerY) {
     for (int i = 0; i < 3; i++) {
         float angleOffset = i * (2 * PI / 3);
-        circledots[i] = {angleOffset, centerX + RADIUS * cos(angleOffset), centerY + RADIUS * sin(angleOffset), DOT_SIZE_LARGE};
-        circledots[i + 3] = {angleOffset + PI / 3, centerX + RADIUS * cos(angleOffset + PI / 3), centerY + RADIUS * sin(angleOffset + PI / 3), DOT_SIZE_SMALL};
+        circledots[i] = {angleOffset, centerX + RADIUS * cos(angleOffset), centerY + RADIUS * sin(angleOffset), DOT_SIZE};
+        circledots[i + 3] = {angleOffset + PI / 3, centerX + RADIUS * cos(angleOffset + PI / 3), centerY + RADIUS * sin(angleOffset + PI / 3), OTHER_DOT_SIZE};
     }
 }
 
@@ -111,6 +116,6 @@ void resetObstacle2() {
 
 SDL_Rect getDotRect2(const Dot2& dot) {
     return {(int)dot.x, (int)dot.y, dot.size, dot.size};
-}*/
+}
 
 #endif
