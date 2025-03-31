@@ -3,6 +3,7 @@
 #define GAME_H
 #include "init.h"
 #include "ObstacleDot.h"
+
 bool isover=false;
 
 
@@ -27,12 +28,14 @@ void updateGame() {
     int deltaY = lastBirdY - birdY;
     if (deltaY > 0 && birdY < maxBirdY) {
         maxBirdY = birdY;
-        squareOffsetY += FALL_SPEED;
+       squareOffsetY+=FALL_SPEED;
+       // circleOffSetY += FALL_SPEED;
     }
 
     if (birdY < CHECK_POINT)  {
         birdY = CHECK_POINT;
-        squareOffsetY += FALL_SPEED;
+        squareOffsetY+=FALL_SPEED;
+        //circleOffSetY += FALL_SPEED;
     }
 
     if (birdY > SCREEN_HEIGHT) {
@@ -41,7 +44,7 @@ void updateGame() {
 
     SDL_Rect birdRect = {birdX, birdY, 40, 40};
     for (const auto& dot : dots) {
-        if (CheckCollision(birdRect, getDotRect(dot))) {
+        if (CheckCollision(birdRect,getDotRect1(dot))) {
             cout << "Game Over!" << endl;
             isover = true;
         }
@@ -49,7 +52,7 @@ void updateGame() {
 
     // Nếu obstacle đi xuống quá màn hình thì reset lại vị trí
     if (squareOffsetY > SCREEN_HEIGHT-200) {
-        resetObstacle();
+        resetObstacle1();
     }
     lastBirdY = birdY;
 }
