@@ -7,15 +7,10 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include"definition.h"
+
 
 using namespace std;
-
-const int SCREEN_WIDTH = 500;
-const int SCREEN_HEIGHT = 800;
-const int GRAVITY = 1;
-const int JUMP_STRENGTH = -15;
-const int CHECK_POINT = SCREEN_HEIGHT / 2 - 100;
-
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
@@ -25,7 +20,8 @@ SDL_Texture* gFlyAnimationTexture=NULL;
 SDL_Texture* gDotTexture=NULL;
 
 // Bird
-int birdX, birdY;
+int birdX = (SCREEN_WIDTH - 40) / 2;
+int birdY = 600;
 int birdVelocityY = 0;
 int lastBirdY;
 int maxBirdY;
@@ -34,8 +30,6 @@ int maxBirdY;
 int FlyAnimationX,FlyAnimationY;
 bool ShowFlyAnimation=false;
 int FlyAnimationTimer=0;
-
-// Obstacle
 
 bool initGame() {
     srand(time(0));
@@ -67,8 +61,6 @@ bool initGame() {
         return false;
     }
     //bird position
-    birdX = (SCREEN_WIDTH - 40) / 2;
-    birdY = 600;
     lastBirdY = birdY;
     maxBirdY = birdY;
     return true;

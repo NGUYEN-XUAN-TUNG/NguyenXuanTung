@@ -2,6 +2,8 @@
 #include "game.h"
 #include "render.h"
 #include"ObstacleDot.h"
+#include"definition.h"
+
 int main(int argc, char* args[]) {
     if (!initGame()) return -1;
 

@@ -1,21 +1,8 @@
 #ifndef OBSTACLEDOT_H
 #define OBSTACLEDOT_H
 #include"init.h"
+#include"definition.h"
 #include<cmath>
-//obs1
-const int SQUARE_SIZE = 250;
-const int DOT_SIZE = 40;
-const float SPEED = 1.5f;
-const float FALL_SPEED = 5.0f;
-//obs2
-const float RADIUS=150;
-const float PI=3.14159f;
-const int OTHER_DOT_SIZE=20;
-
-
-
-
-
 
 struct Dot1 {
     float progress;

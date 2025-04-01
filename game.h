@@ -2,6 +2,7 @@
 #ifndef GAME_H
 #define GAME_H
 #include "init.h"
+#include"definition.h"
 #include "ObstacleDot.h"
 
 bool isover=false;

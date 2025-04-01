@@ -2,6 +2,7 @@
 #ifndef RENDER_H
 #define RENDER_H
 #include "init.h"
+#include"definition.h"
 #include"ObstacleDot.h"
 void render() {
     SDL_RenderClear(gRenderer);
