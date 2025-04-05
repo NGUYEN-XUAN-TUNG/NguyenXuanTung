@@ -1,7 +1,6 @@
 
 #ifndef INIT_H
 #define INIT_H
-#include<vector>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
@@ -17,6 +16,7 @@ SDL_Texture* gBackgroundTexture = NULL;
 SDL_Texture* gFlyAnimationTexture=NULL;
 SDL_Texture* gDotTexture=NULL;
 SDL_Texture* gPipeTexture = NULL;
+SDL_Texture* gColumnTexture=NULL;
 // Bird
 int birdY = 600;
 int birdVelocityY = 0;
@@ -51,6 +51,7 @@ bool initGame() {
     gFlyAnimationTexture = IMG_LoadTexture(gRenderer, "fly-animation.png");
     gDotTexture=IMG_LoadTexture(gRenderer,"Dot.png");
     gPipeTexture=IMG_LoadTexture(gRenderer,"pipe.png");
+    gColumnTexture=IMG_LoadTexture(gRenderer,"column.png");
 
     if (!gBackgroundTexture || !gBirdTexture || !gFlyAnimationTexture || !gDotTexture||!gPipeTexture) {
         cout << "Failed to load textures!" << endl;
@@ -67,6 +68,8 @@ void closeGame() {
     SDL_DestroyTexture(gBirdTexture);
     SDL_DestroyTexture(gFlyAnimationTexture);
     SDL_DestroyTexture(gDotTexture);
+    SDL_DestroyTexture(gPipeTexture);
+    SDL_DestroyTexture(gColumnTexture);
     SDL_DestroyRenderer(gRenderer);
     SDL_DestroyWindow(gWindow);
     SDL_Quit();

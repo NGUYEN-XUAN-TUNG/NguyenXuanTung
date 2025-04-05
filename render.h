@@ -14,6 +14,7 @@ void render() {
     Obstacle2(gRenderer, centerX,centerY);
     Obstacle1(gRenderer);
     Obstacle3(gRenderer);
+    Obstacle4(gRenderer);
 
     SDL_Rect BirdPos = {birdX, birdY, birdW, birdH};
     SDL_RenderCopy(gRenderer, gBirdTexture, NULL, &BirdPos);
@@ -24,5 +25,4 @@ void render() {
     }
     SDL_RenderPresent(gRenderer);
 }
-
 #endif

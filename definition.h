@@ -30,6 +30,21 @@ const float RADIUS=150;
 const float SPEED_CIRCLE=0.02f;
 const int OTHER_DOT_SIZE=20;
 const float PI=3.14159f;
+//ob3 - Pipe
+const int PIPE_WIDTH = 200;
+const int PIPE_HEIGHT = 20;
+const int PIPE_GAP = 350;
+const int PIPE_SPEED = 3;
+const int Y_START_PIPE = -230;
+const int SPACE_PIPE = 200;
+const int PIPE_Y_POSITION = 500;
+//obs 4:
+const int COLUMN_HEIGHT_MAX=200;
+const int COLUMN_HEIGHT_MIN=100;
+const int COLUMN_WIDTH_MAX=20;
+const int COLUMN_WIDTH_MIN=10;
+const int COLUMN_SPEED=2;
+const int Y_START_COLUMN=-200;
 //CheckCollision
 bool CheckCollisionRect(SDL_Rect a, SDL_Rect b) {
     return (a.x < b.x + b.w && a.x + a.w > b.x &&
