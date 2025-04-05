@@ -1,12 +1,10 @@
 
 #ifndef INIT_H
 #define INIT_H
-
+#include<vector>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
 #include"definition.h"
 
 
@@ -18,21 +16,18 @@ SDL_Texture* gBirdTexture = NULL;
 SDL_Texture* gBackgroundTexture = NULL;
 SDL_Texture* gFlyAnimationTexture=NULL;
 SDL_Texture* gDotTexture=NULL;
-
+SDL_Texture* gPipeTexture = NULL;
 // Bird
-int birdX = (SCREEN_WIDTH - 40) / 2;
 int birdY = 600;
 int birdVelocityY = 0;
 int lastBirdY;
 int maxBirdY;
-
 //Fly Animation
-int FlyAnimationX,FlyAnimationY;
+int FlyAnimationY;
 bool ShowFlyAnimation=false;
 int FlyAnimationTimer=0;
 
 bool initGame() {
-    srand(time(0));
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         cout << "SDL Init Error: " << SDL_GetError() << endl;
@@ -55,8 +50,9 @@ bool initGame() {
     gBirdTexture = IMG_LoadTexture(gRenderer, "beach-ball.png");
     gFlyAnimationTexture = IMG_LoadTexture(gRenderer, "fly-animation.png");
     gDotTexture=IMG_LoadTexture(gRenderer,"Dot.png");
+    gPipeTexture=IMG_LoadTexture(gRenderer,"pipe.png");
 
-    if (!gBackgroundTexture || !gBirdTexture || !gFlyAnimationTexture || !gDotTexture) {
+    if (!gBackgroundTexture || !gBirdTexture || !gFlyAnimationTexture || !gDotTexture||!gPipeTexture) {
         cout << "Failed to load textures!" << endl;
         return false;
     }

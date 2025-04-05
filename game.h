@@ -2,24 +2,18 @@
 #ifndef GAME_H
 #define GAME_H
 #include "init.h"
-#include"definition.h"
+#include "definition.h"
 #include "ObstacleDot.h"
-
+#include "ObstaclePipe.h"
+#include <cstdlib>
+#include <ctime>
+int randobs=1;
 bool isover=false;
-
-
-
-bool CheckCollision(SDL_Rect a, SDL_Rect b) {
-    return (a.x < b.x + b.w && a.x + a.w > b.x &&
-            a.y < b.y + b.h && a.y + a.h > b.y);
-}
-
 void updateGame() {
     birdVelocityY += GRAVITY;
     birdY += birdVelocityY;
 
-    FlyAnimationX = birdX;
-    FlyAnimationY = birdY + 40;
+    FlyAnimationY = birdY + birdH;
     if (FlyAnimationTimer > 0) {
         FlyAnimationTimer--;
     } else {
@@ -29,33 +23,45 @@ void updateGame() {
     int deltaY = lastBirdY - birdY;
     if (deltaY > 0 && birdY < maxBirdY) {
         maxBirdY = birdY;
-       squareOffsetY+=FALL_SPEED;
-       // circleOffSetY += FALL_SPEED;
-    }
+        if(randobs==0)squareOffsetY+=FALL_SPEED_FIRST;
+        else if(randobs==1) circleOffSetY+=FALL_SPEED_FIRST;
+        else yTop+=FALL_SPEED;}
 
-    if (birdY < CHECK_POINT)  {
+
+    if (birdY < CHECK_POINT) {
         birdY = CHECK_POINT;
-        squareOffsetY+=FALL_SPEED;
-        //circleOffSetY += FALL_SPEED;
-    }
+    if(randobs==0)squareOffsetY+=FALL_SPEED;
+    else if(randobs==1) circleOffSetY+=FALL_SPEED;
+    else yTop+=FALL_SPEED;}
+
 
     if (birdY > SCREEN_HEIGHT) {
         birdY = SCREEN_HEIGHT - 50;
     }
+    SDL_Rect birdRect = {birdX, birdY, birdW, birdH};
 
-    SDL_Rect birdRect = {birdX, birdY, 40, 40};
-    for (const auto& dot : dots) {
-        if (CheckCollision(birdRect,getDotRect1(dot))) {
-            cout << "Game Over!" << endl;
-            isover = true;
-        }
+    if(randobs==0){for (const auto& dot : dots) {
+            if (CheckCollisionCircle(birdRect, getDotRect1(dot))) isover = true;}
+            }
+    else if(randobs==1){for (const auto& dot : circledots) {
+            if (CheckCollisionCircle(birdRect, getDotRect2(dot))) isover = true;}
+            }
+    else{for( SDL_Rect& rect:getPipeRect3()){
+            if(CheckCollisionRect(rect,birdRect))isover=true;}
+            }
+
+
+    if (squareOffsetY > SCREEN_HEIGHT||circleOffSetY>SCREEN_HEIGHT||yTop>SCREEN_HEIGHT) {
+        if (randobs == 0) {
+            resetObstacle1();
+        } else if(randobs==1) {
+            resetObstacle2();
+        }else {
+            resetObstacle3();}
+
+        randobs=rand()%3;
     }
 
-    // Nếu obstacle đi xuống quá màn hình thì reset lại vị trí
-    if (squareOffsetY > SCREEN_HEIGHT-200) {
-        resetObstacle1();
-    }
     lastBirdY = birdY;
 }
-
 #endif

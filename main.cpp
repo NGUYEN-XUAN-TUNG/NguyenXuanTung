@@ -3,10 +3,13 @@
 #include "render.h"
 #include"ObstacleDot.h"
 #include"definition.h"
+#include "ObstaclePipe.h"
 
 int main(int argc, char* args[]) {
+    srand(time(0));
     if (!initGame()) return -1;
 
+    initializeDots(centerX,centerY);
     SDL_Event e;
     bool quit = false;
 

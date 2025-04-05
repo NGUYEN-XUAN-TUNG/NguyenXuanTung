@@ -41,6 +41,7 @@
 			<Add directory="C:/Users/admin/Downloads/sdl/lib" />
 		</Linker>
 		<Unit filename="ObstacleDot.h" />
+		<Unit filename="ObstaclePipe.h" />
 		<Unit filename="definition.h" />
 		<Unit filename="game.h" />
 		<Unit filename="init.h" />
