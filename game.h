@@ -7,9 +7,10 @@
 #include "ObstaclePipe.h"
 #include <cstdlib>
 #include <ctime>
-int randobs=rand()%4;
+int randobs=4;
 bool isover=false;
 void updateGame() {
+    int pre_randobs=randobs;
     birdVelocityY += GRAVITY;
     birdY += birdVelocityY;
 
@@ -26,7 +27,8 @@ void updateGame() {
         if(randobs==0)squareOffsetY+=FALL_SPEED_FIRST;
         else if(randobs==1) circleOffSetY+=FALL_SPEED_FIRST;
         else if(randobs==2) yTop+=FALL_SPEED;
-        else if(randobs==3) y1_+=FALL_SPEED_FIRST;}
+        else if(randobs==3) y1_+=FALL_SPEED_FIRST;
+        else if(randobs==4) o5y_line1+=FALL_SPEED_FIRST;}
 
 
     if (birdY < CHECK_POINT) {
@@ -34,7 +36,8 @@ void updateGame() {
     if(randobs==0)squareOffsetY+=FALL_SPEED;
     else if(randobs==1) circleOffSetY+=FALL_SPEED;
     else if(randobs==2) yTop+=FALL_SPEED;
-    else if(randobs==3) y1_+=FALL_SPEED;}
+    else if(randobs==3) y1_+=FALL_SPEED;
+    else if(randobs==4) o5y_line1+=FALL_SPEED;}
 
 
     if (birdY > SCREEN_HEIGHT) {
@@ -54,15 +57,19 @@ void updateGame() {
     else if(randobs==3){for( SDL_Rect& rect:getColumnRect4()){
             if(CheckCollisionRect(rect,birdRect))isover=true;}
             }
+    else if(randobs==4){for( SDL_Rect& rect:getPipeRect5()){
+            if(CheckCollisionRect(rect,birdRect))isover=true;}
+            }
 
 
-    if (squareOffsetY > SCREEN_HEIGHT||circleOffSetY>SCREEN_HEIGHT||yTop>SCREEN_HEIGHT||y1_>SCREEN_HEIGHT) {
+    if (squareOffsetY > SCREEN_HEIGHT||circleOffSetY>SCREEN_HEIGHT||yTop>SCREEN_HEIGHT||y1_>SCREEN_HEIGHT||o5y_line1>SCREEN_HEIGHT) {
         if (randobs == 0) resetObstacle1();
         else if(randobs==1) resetObstacle2();
         else if(randobs==2) resetObstacle3();
         else if(randobs==3) resetObstacle4();
+        else if(randobs==4) resetObstacle5();
+        do {randobs = rand() % 5; } while (randobs == pre_randobs);
 
-        randobs=rand()%4;
     }
 
     lastBirdY = birdY;

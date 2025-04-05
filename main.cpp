@@ -4,7 +4,7 @@
 #include"ObstacleDot.h"
 #include"definition.h"
 #include "ObstaclePipe.h"
-
+bool gameStarted = false;
 int main(int argc, char* args[]) {
     srand(time(0));
     if (!initGame()) return -1;
@@ -16,13 +16,14 @@ int main(int argc, char* args[]) {
     while (!quit) {
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_QUIT) quit = true;
-            if (e.type == SDL_MOUSEBUTTONDOWN) {
+            if (e.type == SDL_MOUSEBUTTONDOWN|| (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE)) {
+                if(!gameStarted) gameStarted=true;
                 birdVelocityY = JUMP_STRENGTH;
                 ShowFlyAnimation = true;
                 FlyAnimationTimer = 10;
             }
         }
-        updateGame();
+        if(gameStarted){updateGame();}
         if(isover) quit=true;
         render();
         SDL_Delay(16);

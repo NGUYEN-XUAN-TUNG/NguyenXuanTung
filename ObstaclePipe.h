@@ -100,39 +100,44 @@ vector<SDL_Rect> getColumnRect4() {
 void resetObstacle4(){
     y1_=Y_START_COLUMN;
 }
-//Obs 5:
+//obs 5:
 const int O5_PIPE_HEIGHT=25;
-const int O5_PIPE_WIDTH=50;
-const int O5_SPEED=2;
-const int O5_Y_START=0;
-    //line 1:
-    int o5x1_line1=200;
-    int o5x2_line1(){
-        return SCREEN_WIDTH-o5x1_line1-O5_PIPE_WIDTH;
-        }
-    int o5y_line1=O5_Y_START;
-    //line 2:
-    int o5x1_line2=200;
-    int o5x2_line2(){
-        return SCREEN_WIDTH-o5x1_line2-O5_PIPE_WIDTH;
-        }
-    int o5y_line2(){
-        return o5y_line1+O5_PIPE_HEIGHT;
-        }
-    //line 3:
-    int o5x1_line3=200;
-    int o5x2_line3(){
-        return SCREEN_WIDTH-o5x1_line3-O5_PIPE_WIDTH;
-        }
-    int o5y_line3(){
-        return o5y_line1+2*O5_PIPE_HEIGHT;
-        }
-bool o5positive_line1=false;
-bool o5negative_line1=true;
-bool o5positive_line2=false;
-bool o5negative_line2=true;
-bool o5positive_line3=false;
-bool o5negative_line3=true;
+const int O5_PIPE_WIDTH=100;
+const float O5_SPEED=7;
+const int O5_SPACE_LINE=75;
+const int O5_Y_START=-175;
+
+//Obs 5:
+Uint32 o5pauseTimer_line1 = 0;
+bool o5isPaused_line1 = false;
+
+Uint32 o5pauseTimer_line2 = 0;
+bool o5isPaused_line2 = false;
+
+Uint32 o5pauseTimer_line3 = 0;
+bool o5isPaused_line3 = false;
+
+bool o5positive_line1 = false;
+bool o5negative_line1 = true;
+
+bool o5positive_line2 = false;
+bool o5negative_line2 = true;
+
+bool o5positive_line3 = false;
+bool o5negative_line3 = true;
+    // 3 lines for pipes
+int o5x1_line1 = 150;
+int o5x1_line2 = 150;
+int o5x1_line3 = 150;
+
+int o5x2_line1() { return SCREEN_WIDTH - o5x1_line1 - O5_PIPE_WIDTH; }
+int o5x2_line2() { return SCREEN_WIDTH - o5x1_line2 - O5_PIPE_WIDTH; }
+int o5x2_line3() { return SCREEN_WIDTH - o5x1_line3 - O5_PIPE_WIDTH; }
+
+int o5y_line1 = O5_Y_START;
+int o5y_line2() { return o5y_line1 + O5_SPACE_LINE;}
+int o5y_line3() { return o5y_line1 + 2*O5_SPACE_LINE;}
+
 void Obstacle5(SDL_Renderer* renderer){
     SDL_Rect o5pipe_line1_1 = {o5x1_line1,o5y_line1,O5_PIPE_WIDTH, O5_PIPE_HEIGHT};
     SDL_RenderCopy(renderer, gPipeTexture, nullptr, &o5pipe_line1_1);
@@ -144,16 +149,109 @@ void Obstacle5(SDL_Renderer* renderer){
     SDL_RenderCopy(renderer, gPipeTexture, nullptr, &o5pipe_line2_1);
 
     SDL_Rect o5pipe_line2_2 = {o5x2_line2(),o5y_line2(),O5_PIPE_WIDTH, O5_PIPE_HEIGHT};
-    SDL_RenderCopy(renderer, gPipeTexture, nullptr, &o5pipe4);
+    SDL_RenderCopy(renderer, gPipeTexture, nullptr, &o5pipe_line2_2);
 
     SDL_Rect o5pipe_line3_1 = {o5x1_line3,o5y_line3(),O5_PIPE_WIDTH, O5_PIPE_HEIGHT};
     SDL_RenderCopy(renderer, gPipeTexture, nullptr, &o5pipe_line3_1);
 
     SDL_Rect o5pipe_line3_2 = {o5x2_line3(),o5y_line3(),O5_PIPE_WIDTH, O5_PIPE_HEIGHT};
     SDL_RenderCopy(renderer, gPipeTexture, nullptr, &o5pipe_line3_2);
+            //line 1 delay
+    if (!o5isPaused_line1) {
+        if (o5positive_line1) o5x1_line1 += O5_SPEED;
+        if (o5negative_line1) o5x1_line1 -= O5_SPEED;
+    }
 
-    //line 1:
+    if (!o5isPaused_line1) {
+        if (o5x1_line1 <= 0) {
+            o5positive_line1 = true;
+            o5negative_line1 = false;
+            o5isPaused_line1 = true;
+            o5pauseTimer_line1 = SDL_GetTicks();
+        } else if (o5x1_line1+O5_PIPE_WIDTH >= 250) {
+            o5positive_line1 = false;
+            o5negative_line1 = true;
+            o5isPaused_line1 = true;
+            o5pauseTimer_line1 = SDL_GetTicks();
+        }
+    } else {
+        if (SDL_GetTicks() - o5pauseTimer_line1 >= 1000) {
+            o5isPaused_line1 = false;
+        }
+    }
 
+        //line 2 delay
+    if (!o5isPaused_line2) {
+        if (o5positive_line2) o5x1_line2 += O5_SPEED*0.9f;
+        if (o5negative_line2) o5x1_line2 -= O5_SPEED*0.9f;
+    }
 
+    if (!o5isPaused_line2) {
+        if (o5x1_line2 <=0) {
+            o5positive_line2 = true;
+            o5negative_line2 = false;
+            o5isPaused_line2 = true;
+            o5pauseTimer_line2 = SDL_GetTicks();
+        } else if (o5x1_line2+O5_PIPE_WIDTH >= 250) {
+            o5positive_line2 = false;
+            o5negative_line2 = true;
+            o5isPaused_line2 = true;
+            o5pauseTimer_line2 = SDL_GetTicks();
+        }
+    } else {
+        if (SDL_GetTicks() - o5pauseTimer_line2 >= 1000) {
+            o5isPaused_line2 = false;
+        }
+    }
+
+        //line 3 delay
+    if (!o5isPaused_line3) {
+        if (o5positive_line3) o5x1_line3 += O5_SPEED-1;
+        if (o5negative_line3) o5x1_line3 -= O5_SPEED-1  ;
+    }
+
+    if (!o5isPaused_line3) {
+        if (o5x1_line3 <= 0) {
+            o5positive_line3 = true;
+            o5negative_line3 = false;
+            o5isPaused_line3 = true;
+            o5pauseTimer_line3 = SDL_GetTicks();
+        } else if (o5x1_line3+O5_PIPE_WIDTH >= 250) {
+            o5positive_line3 = false;
+            o5negative_line3 = true;
+            o5isPaused_line3 = true;
+            o5pauseTimer_line3 = SDL_GetTicks();
+        }
+    } else {
+        if (SDL_GetTicks() - o5pauseTimer_line3 >= 1000) {
+            o5isPaused_line3 = false;
+        }
+    }
 }
+vector<SDL_Rect> getPipeRect5() {
+    vector<SDL_Rect> o5_pipes;
+
+    // LINE 1
+    SDL_Rect pipe1_line1 = {o5x1_line1,o5y_line1, O5_PIPE_WIDTH, O5_PIPE_HEIGHT};
+    SDL_Rect pipe2_line1 = {o5x2_line1(), o5y_line1, O5_PIPE_WIDTH, O5_PIPE_HEIGHT};
+    o5_pipes.push_back(pipe1_line1);
+    o5_pipes.push_back(pipe2_line1);
+
+    // LINE 2
+    SDL_Rect pipe1_line2 = {o5x1_line2, o5y_line2(), O5_PIPE_WIDTH, O5_PIPE_HEIGHT};
+    SDL_Rect pipe2_line2 = {o5x2_line2(), o5y_line2(), O5_PIPE_WIDTH, O5_PIPE_HEIGHT};
+    o5_pipes.push_back(pipe1_line2);
+    o5_pipes.push_back(pipe2_line2);
+
+    // LINE 3
+    SDL_Rect pipe1_line3 = {o5x1_line3, o5y_line3(), O5_PIPE_WIDTH, O5_PIPE_HEIGHT};
+    SDL_Rect pipe2_line3 = {o5x2_line3(), o5y_line3(), O5_PIPE_WIDTH, O5_PIPE_HEIGHT};
+    o5_pipes.push_back(pipe1_line3);
+    o5_pipes.push_back(pipe2_line3);
+
+    return o5_pipes;
+}
+void resetObstacle5(){
+    o5y_line1=O5_Y_START;
+    }
 #endif

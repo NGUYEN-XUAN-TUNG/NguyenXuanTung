@@ -46,7 +46,7 @@ bool initGame() {
         return false;
     }
 
-    gBackgroundTexture = IMG_LoadTexture(gRenderer, "background-night.png");
+    gBackgroundTexture = IMG_LoadTexture(gRenderer, "background.png");
     gBirdTexture = IMG_LoadTexture(gRenderer, "beach-ball.png");
     gFlyAnimationTexture = IMG_LoadTexture(gRenderer, "fly-animation.png");
     gDotTexture=IMG_LoadTexture(gRenderer,"Dot.png");
