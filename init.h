@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
+#include<vector>
 #include"definition.h"
 
 
@@ -17,6 +18,13 @@ SDL_Texture* gFlyAnimationTexture=NULL;
 SDL_Texture* gDotTexture=NULL;
 SDL_Texture* gPipeTexture = NULL;
 SDL_Texture* gColumnTexture=NULL;
+//ob6
+SDL_Texture* gGun_IncreTexture=NULL;
+SDL_Texture* gGun_DecreTexture=NULL;
+SDL_Texture* gBullet_IncreTexture=NULL;
+SDL_Texture* gBullet_DecreTexture=NULL;
+SDL_Texture* gBullet_Animation_IncreTexture=NULL;
+SDL_Texture* gBullet_Animation_DecreTexture=NULL;
 // Bird
 int birdY = 600;
 int birdVelocityY = 0;
@@ -34,7 +42,7 @@ bool initGame() {
         return false;
     }
 
-    gWindow = SDL_CreateWindow("Flappy Bird", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    gWindow = SDL_CreateWindow("Fly-up", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (!gWindow) {
         cout << "SDL Window Error: " << SDL_GetError() << endl;
         return false;
@@ -52,8 +60,17 @@ bool initGame() {
     gDotTexture=IMG_LoadTexture(gRenderer,"Dot.png");
     gPipeTexture=IMG_LoadTexture(gRenderer,"pipe.png");
     gColumnTexture=IMG_LoadTexture(gRenderer,"column.png");
+    //ob6
+    gGun_IncreTexture=IMG_LoadTexture(gRenderer,"gun_incre.png");
+    gGun_DecreTexture=IMG_LoadTexture(gRenderer,"gun_decre.png");
+    gBullet_IncreTexture=IMG_LoadTexture(gRenderer,"bullet_incre.png");
+    gBullet_DecreTexture=IMG_LoadTexture(gRenderer,"bullet_decre.png");
+    gBullet_Animation_IncreTexture=IMG_LoadTexture(gRenderer,"bullet_animation_incre.png");
+    gBullet_Animation_DecreTexture=IMG_LoadTexture(gRenderer,"bullet_animation_decre.png");
 
-    if (!gBackgroundTexture || !gBirdTexture || !gFlyAnimationTexture || !gDotTexture||!gPipeTexture) {
+
+    if (!gBackgroundTexture || !gBirdTexture || !gFlyAnimationTexture || !gDotTexture||!gPipeTexture||!gGun_IncreTexture
+        ||!gGun_DecreTexture||!gBullet_IncreTexture||!gBullet_DecreTexture||!gBullet_Animation_IncreTexture||!gBullet_Animation_DecreTexture) {
         cout << "Failed to load textures!" << endl;
         return false;
     }
@@ -70,6 +87,13 @@ void closeGame() {
     SDL_DestroyTexture(gDotTexture);
     SDL_DestroyTexture(gPipeTexture);
     SDL_DestroyTexture(gColumnTexture);
+    //ob6
+    SDL_DestroyTexture(gGun_IncreTexture);
+    SDL_DestroyTexture(gGun_DecreTexture);
+    SDL_DestroyTexture(gBullet_IncreTexture);
+    SDL_DestroyTexture(gBullet_DecreTexture);
+    SDL_DestroyTexture(gBullet_Animation_IncreTexture);
+    SDL_DestroyTexture(gBullet_Animation_DecreTexture);
     SDL_DestroyRenderer(gRenderer);
     SDL_DestroyWindow(gWindow);
     SDL_Quit();

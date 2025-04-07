@@ -1,9 +1,11 @@
 #ifndef OBSTACLEPIPE_H
 #define OBSTACLEPIPE_H
-#include<vector>
 #include "init.h"
 #include "definition.h"
-//initial  pos  pipe;  |===|    |===|
+        //obs 3: line 8;    pipe
+        //obs 4: line 52;   column
+        //obs 5: line 105;  3 lines of pipes
+//obs3
 int x1 = SCREEN_WIDTH;
 int x2 = x1 + PIPE_GAP;
 int x3 =-PIPE_WIDTH;
@@ -45,7 +47,7 @@ vector<SDL_Rect> getPipeRect3() {
     return pipes;
 }
 void resetObstacle3(){
-    yTop = Y_START_PIPE;
+    if(yTop>SCREEN_WIDTH)yTop = Y_START_PIPE;
 }
 //Initialize obs 4
 bool obs4positive=true;
@@ -182,8 +184,8 @@ void Obstacle5(SDL_Renderer* renderer){
 
         //line 2 delay
     if (!o5isPaused_line2) {
-        if (o5positive_line2) o5x1_line2 += O5_SPEED*0.9f;
-        if (o5negative_line2) o5x1_line2 -= O5_SPEED*0.9f;
+        if (o5positive_line2) o5x1_line2 += O5_SPEED;
+        if (o5negative_line2) o5x1_line2 -= O5_SPEED;
     }
 
     if (!o5isPaused_line2) {
@@ -199,15 +201,15 @@ void Obstacle5(SDL_Renderer* renderer){
             o5pauseTimer_line2 = SDL_GetTicks();
         }
     } else {
-        if (SDL_GetTicks() - o5pauseTimer_line2 >= 1000) {
+        if (SDL_GetTicks() - o5pauseTimer_line2 >=1000 ) {
             o5isPaused_line2 = false;
         }
     }
 
         //line 3 delay
     if (!o5isPaused_line3) {
-        if (o5positive_line3) o5x1_line3 += O5_SPEED-1;
-        if (o5negative_line3) o5x1_line3 -= O5_SPEED-1  ;
+        if (o5positive_line3) o5x1_line3 += O5_SPEED;
+        if (o5negative_line3) o5x1_line3 -= O5_SPEED;
     }
 
     if (!o5isPaused_line3) {

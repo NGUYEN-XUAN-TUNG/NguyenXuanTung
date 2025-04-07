@@ -8,7 +8,6 @@ bool gameStarted = false;
 int main(int argc, char* args[]) {
     srand(time(0));
     if (!initGame()) return -1;
-
     initializeDots(centerX,centerY);
     SDL_Event e;
     bool quit = false;
@@ -28,7 +27,6 @@ int main(int argc, char* args[]) {
         render();
         SDL_Delay(16);
     }
-
     closeGame();
     return 0;
 }

@@ -24,7 +24,7 @@ const int BASE_Y1=125;
 const int BASE_X2=125+SQUARE_SIZE;
 const int BASE_Y2=125+SQUARE_SIZE;
 
-const int Y_START_DOT=-SQUARE_SIZE-150;
+const int Y_START_DOT=-400;
 //obs2 - Dot
 const float RADIUS=150;
 const float SPEED_CIRCLE=0.02f;
