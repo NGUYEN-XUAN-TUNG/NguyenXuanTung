@@ -69,7 +69,7 @@ SDL_Rect getDotRect1(const Dot1& dot) {
 }
 //obs2
 const float centerX = SCREEN_WIDTH / 2;
-const float centerY = -100;
+const float centerY = -95   ;
 
 struct Dot2{
     float x,y;
@@ -107,7 +107,7 @@ void Obstacle2(SDL_Renderer *renderer, float centerX, float centerY) {
 }
 
 void resetObstacle2() {
-    circleOffSetY= Y_START_DOT;
+    circleOffSetY= -75;
     }
 SDL_Rect getDotRect2(const Dot2& dot) {
     return {(int)dot.x, (int)dot.y, dot.size, dot.size};

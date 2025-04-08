@@ -1,8 +1,8 @@
-
 #ifndef INIT_H
 #define INIT_H
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <iostream>
 #include<vector>
 #include"definition.h"
@@ -25,6 +25,8 @@ SDL_Texture* gBullet_IncreTexture=NULL;
 SDL_Texture* gBullet_DecreTexture=NULL;
 SDL_Texture* gBullet_Animation_IncreTexture=NULL;
 SDL_Texture* gBullet_Animation_DecreTexture=NULL;
+
+Mix_Chunk* gFlySound = NULL;
 // Bird
 int birdY = 600;
 int birdVelocityY = 0;
@@ -53,6 +55,11 @@ bool initGame() {
         cout << "SDL Render Error: " << SDL_GetError() << endl;
         return false;
     }
+    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
+        cout << "SDL Mixer Error: " << Mix_GetError()<<endl;
+        return false;
+    }
+
 
     gBackgroundTexture = IMG_LoadTexture(gRenderer, "background.png");
     gBirdTexture = IMG_LoadTexture(gRenderer, "beach-ball.png");
@@ -67,11 +74,12 @@ bool initGame() {
     gBullet_DecreTexture=IMG_LoadTexture(gRenderer,"bullet_decre.png");
     gBullet_Animation_IncreTexture=IMG_LoadTexture(gRenderer,"bullet_animation_incre.png");
     gBullet_Animation_DecreTexture=IMG_LoadTexture(gRenderer,"bullet_animation_decre.png");
-
+    //sound
+    gFlySound = Mix_LoadWAV("Fly.mp3");
 
     if (!gBackgroundTexture || !gBirdTexture || !gFlyAnimationTexture || !gDotTexture||!gPipeTexture||!gGun_IncreTexture
-        ||!gGun_DecreTexture||!gBullet_IncreTexture||!gBullet_DecreTexture||!gBullet_Animation_IncreTexture||!gBullet_Animation_DecreTexture) {
-        cout << "Failed to load textures!" << endl;
+        ||!gGun_DecreTexture||!gBullet_IncreTexture||!gBullet_DecreTexture||!gBullet_Animation_IncreTexture||!gBullet_Animation_DecreTexture||!gFlySound) {
+        cout << "Failed to load textures or Sound!" << endl;
         return false;
     }
     //bird position
@@ -96,7 +104,9 @@ void closeGame() {
     SDL_DestroyTexture(gBullet_Animation_DecreTexture);
     SDL_DestroyRenderer(gRenderer);
     SDL_DestroyWindow(gWindow);
+    Mix_FreeChunk(gFlySound);
     SDL_Quit();
+    Mix_Quit();
 }
 
 #endif

@@ -6,7 +6,7 @@
 #include "ObstaclePipe.h"
 #include <cstdlib>
 #include <ctime>
-int randobs=5;
+int randobs=1;
 int pre_randobs;
 bool isover=false;
 void updateGame() {
@@ -73,8 +73,6 @@ void updateGame() {
         else if(randobs==5) resetObstacle6();
         pre_randobs=randobs;
         do {randobs = rand() % 6; } while (randobs == pre_randobs);
-
-
     }
 
     lastBirdY = birdY;

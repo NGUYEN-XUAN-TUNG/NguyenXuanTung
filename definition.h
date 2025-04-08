@@ -7,6 +7,8 @@ const int SCREEN_HEIGHT = 800;
 const int GRAVITY = 1;
 const int JUMP_STRENGTH = -15;
 const int CHECK_POINT = SCREEN_HEIGHT / 2 - 100;
+const float FALL_SPEED = 7.0f;
+const float FALL_SPEED_FIRST=9.0f;
 //Bird
 const int birdW=40;
 const int birdH=40;
@@ -17,8 +19,6 @@ const int FlyAnimationX = birdX;
 const int SQUARE_SIZE = 250;
 const int DOT_SIZE = 40;
 const float SPEED_SQUARE = 3.0f;
-const float FALL_SPEED = 6.0f;
-const float FALL_SPEED_FIRST=9.0f;
 const int BASE_X1=125;
 const int BASE_Y1=125;
 const int BASE_X2=125+SQUARE_SIZE;
@@ -48,7 +48,7 @@ const int Y_START_COLUMN=-200;
 //obs 5:
 const int O5_PIPE_HEIGHT=25;
 const int O5_PIPE_WIDTH=100;
-const float O5_SPEED=7;
+const float O5_SPEED=9;
 const int O5_SPACE_LINE=75;
 const int O5_Y_START=-175;
 //ob6 - gun;

@@ -18,6 +18,8 @@ int main(int argc, char* args[]) {
             if (e.type == SDL_MOUSEBUTTONDOWN|| (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE)) {
                 if(!gameStarted) gameStarted=true;
                 birdVelocityY = JUMP_STRENGTH;
+                Mix_PlayChannel(-1, gFlySound, 0);
+                Mix_VolumeChunk(gFlySound, 20);
                 ShowFlyAnimation = true;
                 FlyAnimationTimer = 10;
             }
