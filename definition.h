@@ -45,6 +45,21 @@ const int COLUMN_WIDTH_MAX=20;
 const int COLUMN_WIDTH_MIN=10;
 const int COLUMN_SPEED=2;
 const int Y_START_COLUMN=-200;
+//obs 5:
+const int O5_PIPE_HEIGHT=25;
+const int O5_PIPE_WIDTH=100;
+const float O5_SPEED=7;
+const int O5_SPACE_LINE=75;
+const int O5_Y_START=-175;
+//ob6 - gun;
+const int GUN_HEIGHT=60;
+const int GUN_WIDTH=80;
+const int BULLET_WIDTH=30;
+const int BULLET_HEIGHT=12;
+const int BULLET_ANIMATION_WIDTH=40;
+const int BULLET_ANIMATION_HEIGHT=10;
+const int BULLET_SPEED=8;
+const int Y_START_GUN=-150;
 //CheckCollision
 bool CheckCollisionRect(SDL_Rect a, SDL_Rect b) {
     return (a.x < b.x + b.w && a.x + a.w > b.x &&

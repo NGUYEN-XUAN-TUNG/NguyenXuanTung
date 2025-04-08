@@ -102,13 +102,6 @@ vector<SDL_Rect> getColumnRect4() {
 void resetObstacle4(){
     y1_=Y_START_COLUMN;
 }
-//obs 5:
-const int O5_PIPE_HEIGHT=25;
-const int O5_PIPE_WIDTH=100;
-const float O5_SPEED=7;
-const int O5_SPACE_LINE=75;
-const int O5_Y_START=-175;
-
 //Obs 5:
 Uint32 o5pauseTimer_line1 = 0;
 bool o5isPaused_line1 = false;

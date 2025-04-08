@@ -1,4 +1,3 @@
-
 #ifndef GAME_H
 #define GAME_H
 #include "init.h"
@@ -7,7 +6,7 @@
 #include "ObstaclePipe.h"
 #include <cstdlib>
 #include <ctime>
-int randobs=4;
+int randobs=5;
 int pre_randobs;
 bool isover=false;
 void updateGame() {

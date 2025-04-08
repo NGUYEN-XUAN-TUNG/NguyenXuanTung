@@ -113,16 +113,6 @@ SDL_Rect getDotRect2(const Dot2& dot) {
     return {(int)dot.x, (int)dot.y, dot.size, dot.size};
 }
 
-
-//ob6 - gun;
-const int GUN_HEIGHT=60;
-const int GUN_WIDTH=80;
-const int BULLET_WIDTH=30;
-const int BULLET_HEIGHT=12;
-const int BULLET_ANIMATION_WIDTH=40;
-const int BULLET_ANIMATION_HEIGHT=10;
-const int BULLET_SPEED=8;
-const int Y_START_GUN=-150;
 //gun
 int y_gun_incre=Y_START_GUN;
 int y_gun_decre(){
