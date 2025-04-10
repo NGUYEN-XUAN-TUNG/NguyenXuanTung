@@ -13,7 +13,6 @@ void updateGame() {
     birdVelocityY += GRAVITY;
     birdY += birdVelocityY;
 
-    FlyAnimationY = birdY + birdH;
     if (FlyAnimationTimer > 0) {
         FlyAnimationTimer--;
     } else {
