@@ -13,6 +13,7 @@ const float FALL_SPEED_FIRST=9.0f;
 const int birdW=40;
 const int birdH=40;
 const int birdX = (SCREEN_WIDTH - birdW) / 2;
+const int birdStart=600;
 //Fly animation
 const int FlyAnimationX = birdX;
 //obs1 - Dot

@@ -6,6 +6,7 @@
 #include "ObstaclePipe.h"
 #include <cstdlib>
 #include <ctime>
+int score=0;
 int randobs=1;
 int pre_randobs;
 bool isover=false;
@@ -39,7 +40,7 @@ void updateGame() {
     else if(randobs==4) o5y_line1+=FALL_SPEED;
     else if(randobs==5) y_gun_incre+=FALL_SPEED;}
     if (birdY > SCREEN_HEIGHT) {
-        birdY = SCREEN_HEIGHT - 50;
+        isover=true;
     }
     SDL_Rect birdRect = {birdX, birdY, birdW, birdH};
 

@@ -18,7 +18,6 @@ bool character_ = false;
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
-SDL_Texture* gBirdTexture = NULL;
 SDL_Texture* gBackgroundTexture = NULL;
 SDL_Texture* gFlyAnimationTexture=NULL;
 SDL_Texture* gDotTexture=NULL;
@@ -37,11 +36,18 @@ SDL_Texture* StartTexture = NULL;
 SDL_Texture* CharacterTexture= NULL;
 SDL_Texture* PausedTexture = NULL;
 SDL_Texture* SelectCharacterTexture=NULL;
+SDL_Texture* LeftButtonTexture=NULL;
+SDL_Texture* RightButtonTexture=NULL;
+SDL_Texture* HomeTexture = NULL;
+SDL_Texture* GameoverTexture = NULL;
+SDL_Texture* RestartButtonTexture = NULL;
+
 vector<SDL_Texture*> birds(6);
+int selectedCharacterIndex=0;
 
 Mix_Chunk* gFlySound = NULL;
 // Bird
-int birdY = 600;
+int birdY = birdStart;
 int birdVelocityY = 0;
 int lastBirdY;
 int maxBirdY;
@@ -77,7 +83,6 @@ bool initGame() {
 
 
     gBackgroundTexture = IMG_LoadTexture(gRenderer, "background.png");
-    gBirdTexture = IMG_LoadTexture(gRenderer, "moon.png");
     gFlyAnimationTexture = IMG_LoadTexture(gRenderer, "fly-animation.png");
     gDotTexture=IMG_LoadTexture(gRenderer,"Dot.png");
     gPipeTexture=IMG_LoadTexture(gRenderer,"pipe.png");
@@ -95,6 +100,12 @@ bool initGame() {
     CharacterTexture=IMG_LoadTexture(gRenderer,"character.png");
     PausedTexture = IMG_LoadTexture(gRenderer, "pause.png");
     SelectCharacterTexture=IMG_LoadTexture(gRenderer,"selectchar.png");
+    LeftButtonTexture=IMG_LoadTexture(gRenderer, "left_button.png");
+    RightButtonTexture=IMG_LoadTexture(gRenderer, "right_button.png");
+    HomeTexture=IMG_LoadTexture(gRenderer,"home.png");
+    GameoverTexture=IMG_LoadTexture(gRenderer,"gameover.png");
+    RestartButtonTexture=IMG_LoadTexture(gRenderer,"restart.png");
+
     //load characters
     for( int i=0;i<6;i++){
         string path="bird"+to_string(i+1)+".png";
@@ -107,9 +118,11 @@ bool initGame() {
     //sound
     gFlySound = Mix_LoadWAV("Fly.mp3");
 
-    if (!gBackgroundTexture || !gBirdTexture || !gFlyAnimationTexture || !gDotTexture||!gPipeTexture||!gGun_IncreTexture
-        ||!gGun_DecreTexture||!gBullet_IncreTexture||!gBullet_DecreTexture||!gBullet_Animation_IncreTexture||!gBullet_Animation_DecreTexture||!gFlySound) {
-        cout << "Failed to load textures or Sound!" << endl;
+    if (!gBackgroundTexture|| !gFlyAnimationTexture || !gDotTexture || !gPipeTexture ||
+        !gColumnTexture || !gFlySound || !MenuTexture || !StartTexture || !CharacterTexture || !PausedTexture ||
+        !SelectCharacterTexture || birds.empty()||!LeftButtonTexture||!RightButtonTexture||!HomeTexture||
+        !GameoverTexture||!RestartButtonTexture) {
+        cout << "Failed to load resources!" << endl;
         return false;
     }
     //bird position
@@ -120,7 +133,6 @@ bool initGame() {
 
 void closeGame() {
     SDL_DestroyTexture(gBackgroundTexture);
-    SDL_DestroyTexture(gBirdTexture);
     SDL_DestroyTexture(gFlyAnimationTexture);
     SDL_DestroyTexture(gDotTexture);
     SDL_DestroyTexture(gPipeTexture);
@@ -136,6 +148,12 @@ void closeGame() {
     SDL_DestroyTexture(CharacterTexture);
     SDL_DestroyTexture(PausedTexture);
     SDL_DestroyTexture(SelectCharacterTexture);
+    SDL_DestroyTexture(RightButtonTexture);
+    SDL_DestroyTexture(LeftButtonTexture);
+    SDL_DestroyTexture(HomeTexture);
+    SDL_DestroyTexture(GameoverTexture);
+    SDL_DestroyTexture(RestartButtonTexture);
+
     for (int i = 0; i < 6; ++i) {
         SDL_DestroyTexture(birds[i]);
     }

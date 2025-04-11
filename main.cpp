@@ -1,5 +1,6 @@
 #include "init.h"
 #include "game.h"
+#include "gameover.h"
 #include "render.h"
 #include "ObstacleDot.h"
 #include "definition.h"
@@ -20,29 +21,32 @@ int main(int argc, char* args[]) {
                 pausing();
                 if (menu_ || character_) {
                     renderinMenu(e);
-                }
-                else if (gameStarted) {
+                }else if (gameStarted&&!isover) {
                     birdVelocityY = JUMP_STRENGTH;
                     Mix_VolumeChunk(gFlySound, 20);
                     Mix_PlayChannel(-1, gFlySound, 0);
                     ShowFlyAnimation = true;
                     FlyAnimationTimer = 10;
+                }else if(isover){
+                    renderinGameover(e);
+                }else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) {
+                            if (gameStarted) gameStarted = false;
+                            else gameStarted = true;
                 }
-            } else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) {
-                if (gameStarted) gameStarted = false;
-                else gameStarted = true;
-            }
-        }
-        if (menu_) {
+            }}
+      if (menu_) {
             LoadMenu();
         }
         else if (character_) {
-            LoadCharacterSelectScreen();
+            renderCharacterSelection(e);
         }
         else if (gameStarted) {
-            updateGame();
-            if (isover) quit = true;
-            render(e);
+            if (!isover) {
+                updateGame();
+                render(e);
+            } else {
+                LoadGameover();
+            }
         }
         SDL_Delay(16);
     }
