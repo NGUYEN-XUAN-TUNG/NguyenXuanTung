@@ -4,12 +4,11 @@
 #include "definition.h"
 #include "ObstacleDot.h"
 #include "ObstaclePipe.h"
+#include "gameover.h"
 #include <cstdlib>
 #include <ctime>
-int score=0;
 int randobs=1;
 int pre_randobs;
-bool isover=false;
 void updateGame() {
     birdVelocityY += GRAVITY;
     birdY += birdVelocityY;
@@ -73,6 +72,8 @@ void updateGame() {
         else if(randobs==5) resetObstacle6();
         pre_randobs=randobs;
         do {randobs = rand() % 6; } while (randobs == pre_randobs);
+        score++;
+        updateScore(score);
     }
 
     lastBirdY = birdY;

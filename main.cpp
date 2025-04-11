@@ -17,11 +17,18 @@ int main(int argc, char* args[]) {
             if (e.type == SDL_QUIT) {
                 quit = true;
             } else if (e.type == SDL_MOUSEBUTTONDOWN || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE)) {
-                pausing();
+                pausing(e);
                 if (menu_ || character_) {
                     renderinMenu(e);
-                }else if (ready&&!isover) {
+                }else if (!gameStarted&&!isover&&isplaying) {
                     gameStarted=true;
+                    ready=false;
+                    birdVelocityY = JUMP_STRENGTH;
+                    Mix_VolumeChunk(gFlySound, 20);
+                    Mix_PlayChannel(-1, gFlySound, 0);
+                    ShowFlyAnimation = true;
+                    FlyAnimationTimer = 10;
+                }else if (gameStarted&&!isover&&isplaying) {
                     birdVelocityY = JUMP_STRENGTH;
                     Mix_VolumeChunk(gFlySound, 20);
                     Mix_PlayChannel(-1, gFlySound, 0);
@@ -29,9 +36,6 @@ int main(int argc, char* args[]) {
                     FlyAnimationTimer = 10;
                 }else if(isover){
                     renderinGameover(e);
-                }else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) {
-                            if (gameStarted) gameStarted = false;
-                            else gameStarted = true;
                 }
             }}
       if (menu_) {
@@ -39,7 +43,7 @@ int main(int argc, char* args[]) {
         }
         else if (character_) {
             renderCharacterSelection(e);
-        }else if (gameStarted) {
+        }else if (gameStarted&&isplaying) {
             if (!isover) {
                 updateGame();
                 render(e);
@@ -50,6 +54,8 @@ int main(int argc, char* args[]) {
                 Mix_PlayChannel(-1, gDieSound, 0);
                 playedDieSound = true;
                 }
+                highscore=loadHighScore();
+                saveScore(score);
                 LoadGameover();
             }
         }

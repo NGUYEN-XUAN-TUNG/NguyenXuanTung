@@ -1,7 +1,6 @@
 #ifndef DEFINITION_H
 #define DEFINITION_H
 #include<cmath>
-
 //init
 const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = 800;

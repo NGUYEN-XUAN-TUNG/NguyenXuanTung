@@ -5,6 +5,14 @@
 #include"ObstacleDot.h"
 #include "ObstaclePipe.h"
 #include "gameover.h"
+void updateScore(int score) {
+    string scoreText = to_string(score);
+    SDL_Color textColor = {255, 255, 255};
+    SDL_Surface* textSurface = TTF_RenderText_Blended(gFont, scoreText.c_str(), textColor);
+    scoreTexture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
+    scoreRect = {SCREEN_WIDTH/2,20, textSurface->w, textSurface->h};
+    SDL_FreeSurface(textSurface);
+}
 void resetAllObs(){
     resetObstacle1();
     resetObstacle2();
@@ -30,15 +38,15 @@ void render(SDL_Event &event) {
     SDL_RenderCopy(gRenderer, PausedTexture, NULL, &PauseRect);
 
     SDL_Rect BirdPos = {birdX, birdY, birdW, birdH};
-
-    SDL_RenderCopy(gRenderer, birds[selectedCharacterIndex], NULL, &BirdPos);
     if(gameStarted)
-    {
+    { SDL_RenderCopy(gRenderer, birds[selectedCharacterIndex], NULL, &BirdPos);
     if (ShowFlyAnimation) {
         SDL_Rect FlyAnimationPos = {FlyAnimationX, FlyAnimationY(), birdW, birdH};
         SDL_RenderCopy(gRenderer, gFlyAnimationTexture, NULL, &FlyAnimationPos);
     }
-    }
+    }else if (ready){SDL_RenderCopy(gRenderer, birds[selectedCharacterIndex], NULL, &BirdPos);}
+    if(!gameStarted)updateScore(0);
+    SDL_RenderCopy(gRenderer, scoreTexture, NULL, &scoreRect);
     SDL_RenderPresent(gRenderer);
 
 }
@@ -159,14 +167,15 @@ void renderinMenu(SDL_Event &event) {
                 isover=false;
             }
         }
-    }
-}
-void pausing() {
+    }}
+    //lỗi escape :((( ko bt tại sao
+void pausing(SDL_Event &e) {
     int x, y;
     SDL_GetMouseState(&x, &y);
-    if (x > SCREEN_WIDTH - 50 && y < 50) {
-        paused_ = !paused_;
-        gameStarted = !paused_;
+    if ((x > SCREEN_WIDTH - 50&& y < 50)||(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)) {
+       paused_ = !paused_;
+       isplaying=!isplaying;
+
     }
 }
 

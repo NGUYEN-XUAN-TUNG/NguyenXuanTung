@@ -3,19 +3,23 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #include <iostream>
 #include<vector>
+#include <fstream>
+#include <sstream>
 #include"definition.h"
 
 
 using namespace std;
-
+bool isover=false;
 bool gameStarted = false;
 bool menu_ = true;
 bool paused_ = false;
 bool character_ = false;
 bool playedDieSound = false;
 bool ready=false;
+bool isplaying=true;
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
@@ -42,12 +46,17 @@ SDL_Texture* RightButtonTexture=NULL;
 SDL_Texture* HomeTexture = NULL;
 SDL_Texture* GameoverTexture = NULL;
 SDL_Texture* RestartButtonTexture = NULL;
+SDL_Texture* scoreTexture=NULL;
 
 vector<SDL_Texture*> birds(6);
 int selectedCharacterIndex=0;
 
 Mix_Chunk* gFlySound = NULL;
 Mix_Chunk* gDieSound = NULL;
+//Font
+int score=0;
+TTF_Font* gFont=NULL;
+SDL_Rect scoreRect;
 // Bird
 int birdY = birdStart;
 int birdVelocityY = 0;
@@ -81,6 +90,10 @@ bool initGame() {
     if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
         cout << "SDL Mixer Error: " << Mix_GetError()<<endl;
         return false;
+    }
+    if (TTF_Init() == -1) {
+    cout << "SDl TTF Error: " << TTF_GetError()<<endl;
+    return false;
     }
 
 
@@ -120,11 +133,11 @@ bool initGame() {
     //sound
     gFlySound = Mix_LoadWAV("Fly.mp3");
     gDieSound = Mix_LoadWAV("Die.mp3");
-
+    gFont=TTF_OpenFont("font.ttf",40);
     if (!gBackgroundTexture|| !gFlyAnimationTexture || !gDotTexture || !gPipeTexture ||
         !gColumnTexture || !gFlySound ||!gDieSound|| !MenuTexture || !StartTexture || !CharacterTexture || !PausedTexture ||
         !SelectCharacterTexture || birds.empty()||!LeftButtonTexture||!RightButtonTexture||!HomeTexture||
-        !GameoverTexture||!RestartButtonTexture) {
+        !GameoverTexture||!RestartButtonTexture||gFont == nullptr) {
         cout << "Failed to load resources!" << endl;
         return false;
     }
