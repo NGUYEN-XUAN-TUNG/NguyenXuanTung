@@ -1,6 +1,7 @@
 #ifndef DEFINITION_H
 #define DEFINITION_H
 #include<cmath>
+
 //init
 const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = 800;
@@ -36,8 +37,8 @@ const int PIPE_WIDTH = 200;
 const int PIPE_HEIGHT = 20;
 const int PIPE_GAP = 350;
 const int PIPE_SPEED = 3;
-const int Y_START_PIPE = -230;
-const int SPACE_PIPE = 200;
+const int Y_START_PIPE = -280;
+const int SPACE_PIPE = 250;
 const int PIPE_Y_POSITION = 500;
 //obs 4:
 const int COLUMN_HEIGHT_MAX=200;

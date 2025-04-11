@@ -34,7 +34,7 @@ void renderinGameover(SDL_Event &event){
         int x, y;
         SDL_GetMouseState(&x, &y);
         if( x > 110 && x < 260 && y > 560 && y < 710 ) {
-            startNewGame();
+            startNewGame(event);
         }else if( x > 275 && x < 425 && y > 560 && y < 710 ){
             menu_ = true;
             character_ = false;

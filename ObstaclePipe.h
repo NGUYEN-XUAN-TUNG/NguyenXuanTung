@@ -47,7 +47,7 @@ vector<SDL_Rect> getPipeRect3() {
     return pipes;
 }
 void resetObstacle3(){
-    if(yTop>SCREEN_WIDTH)yTop = Y_START_PIPE;
+    yTop = Y_START_PIPE;
 }
 //Initialize obs 4
 bool obs4positive=true;

@@ -14,7 +14,8 @@ bool gameStarted = false;
 bool menu_ = true;
 bool paused_ = false;
 bool character_ = false;
-
+bool playedDieSound = false;
+bool ready=false;
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
@@ -46,6 +47,7 @@ vector<SDL_Texture*> birds(6);
 int selectedCharacterIndex=0;
 
 Mix_Chunk* gFlySound = NULL;
+Mix_Chunk* gDieSound = NULL;
 // Bird
 int birdY = birdStart;
 int birdVelocityY = 0;
@@ -117,9 +119,10 @@ bool initGame() {
     }
     //sound
     gFlySound = Mix_LoadWAV("Fly.mp3");
+    gDieSound = Mix_LoadWAV("Die.mp3");
 
     if (!gBackgroundTexture|| !gFlyAnimationTexture || !gDotTexture || !gPipeTexture ||
-        !gColumnTexture || !gFlySound || !MenuTexture || !StartTexture || !CharacterTexture || !PausedTexture ||
+        !gColumnTexture || !gFlySound ||!gDieSound|| !MenuTexture || !StartTexture || !CharacterTexture || !PausedTexture ||
         !SelectCharacterTexture || birds.empty()||!LeftButtonTexture||!RightButtonTexture||!HomeTexture||
         !GameoverTexture||!RestartButtonTexture) {
         cout << "Failed to load resources!" << endl;
@@ -159,6 +162,7 @@ void closeGame() {
     }
 
     Mix_FreeChunk(gFlySound);
+    Mix_FreeChunk(gDieSound);
     SDL_DestroyRenderer(gRenderer);
     SDL_DestroyWindow(gWindow);
     SDL_Quit();

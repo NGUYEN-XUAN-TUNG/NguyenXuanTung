@@ -13,16 +13,6 @@ void resetAllObs(){
     resetObstacle5();
     resetObstacle6();
 }
-void startNewGame(){
-    menu_ = false;
-    character_ = false;
-    gameStarted = true;
-    isover = false;
-    score = 0;
-    birdY = birdStart;
-    birdVelocityY = 0;
-    resetAllObs();
-}
 void render(SDL_Event &event) {
     SDL_RenderClear(gRenderer);
 
@@ -41,18 +31,29 @@ void render(SDL_Event &event) {
 
     SDL_Rect BirdPos = {birdX, birdY, birdW, birdH};
 
-
+    SDL_RenderCopy(gRenderer, birds[selectedCharacterIndex], NULL, &BirdPos);
     if(gameStarted)
     {
-    SDL_RenderCopy(gRenderer, birds[selectedCharacterIndex], NULL, &BirdPos);
-
     if (ShowFlyAnimation) {
         SDL_Rect FlyAnimationPos = {FlyAnimationX, FlyAnimationY(), birdW, birdH};
         SDL_RenderCopy(gRenderer, gFlyAnimationTexture, NULL, &FlyAnimationPos);
     }
-    SDL_RenderPresent(gRenderer);
     }
+    SDL_RenderPresent(gRenderer);
 
+}
+void startNewGame(SDL_Event &e) {
+    menu_ = false;
+    character_ = false;
+    ready = true;
+    gameStarted = false;
+    isover = false;
+    score = 0;
+    birdY = birdStart;
+    birdVelocityY = 0;
+    resetAllObs();
+    render(e);
+    playedDieSound = false;
 }
 void LoadCharacterSelectScreen() {
     SDL_Rect charBG = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
@@ -150,7 +151,7 @@ void renderinMenu(SDL_Event &event) {
 
         if (menu_) {
             if (x > 150 && x < 350 && y > 325 && y < 425) {
-                startNewGame();
+                startNewGame(event);
             } else if (x > 150 && x < 350 && y > 445 && y < 545) {
                 menu_ = false;
                 character_ = true;
