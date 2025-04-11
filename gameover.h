@@ -3,24 +3,6 @@
 #include "init.h"
 #include "definition.h"
 #include "render.h"
-void resetAllObs(){
-    resetObstacle1();
-    resetObstacle2();
-    resetObstacle3();
-    resetObstacle4();
-    resetObstacle5();
-    resetObstacle6();
-}
-void startNewGame(){
-    menu_ = false;
-    character_ = false;
-    gameStarted = true;
-    isover = false;
-    score = 0;
-    birdY = birdStart;
-    birdVelocityY = 0;
-    resetAllObs();
-}
 void LoadHome(){
     SDL_Rect home = {275,560,150,150};
     SDL_RenderCopy(gRenderer, HomeTexture, NULL, &home);

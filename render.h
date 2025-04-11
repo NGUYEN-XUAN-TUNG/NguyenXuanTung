@@ -5,6 +5,24 @@
 #include"ObstacleDot.h"
 #include "ObstaclePipe.h"
 #include "gameover.h"
+void resetAllObs(){
+    resetObstacle1();
+    resetObstacle2();
+    resetObstacle3();
+    resetObstacle4();
+    resetObstacle5();
+    resetObstacle6();
+}
+void startNewGame(){
+    menu_ = false;
+    character_ = false;
+    gameStarted = true;
+    isover = false;
+    score = 0;
+    birdY = birdStart;
+    birdVelocityY = 0;
+    resetAllObs();
+}
 void render(SDL_Event &event) {
     SDL_RenderClear(gRenderer);
 
