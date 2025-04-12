@@ -5,7 +5,6 @@
 #include "definition.h"
 #include "render.h"
 int highscore;
-
 int loadHighScore() {
     int hscore=0;
     ifstream file("highscore.txt");
@@ -37,15 +36,14 @@ void renderCenteredText(SDL_Renderer* renderer, TTF_Font* font, const string& te
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
 }
-void showScoreScreen(SDL_Renderer* renderer, TTF_Font* font, int score, int highScore) {
+void showScoreScreen(SDL_Renderer* renderer, TTF_Font* font, int score, int highscore) {
     SDL_Color textColor = {0, 0, 0};
     int centerX = 250;
     int startY = 350;
-        stringstream hs, ys;
-        hs << "High Score: " << highScore;
-        ys << "Your Score: " << score;
-        renderCenteredText(renderer, font, hs.str(), centerX, startY, textColor);
-        renderCenteredText(renderer, font, ys.str(), centerX, startY + 50, textColor);
+    string hs="High Score: "+to_string(highscore);
+    string ys="Your Score: "+to_string(score);
+    renderCenteredText(renderer, font, hs.c_str(), centerX, startY, textColor);
+    renderCenteredText(renderer, font, ys.c_str(), centerX, startY + 50, textColor);
 
 }
 

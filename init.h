@@ -20,6 +20,7 @@ bool character_ = false;
 bool playedDieSound = false;
 bool ready=false;
 bool isplaying=true;
+bool scoreSaved=false;
 
 SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
@@ -48,7 +49,7 @@ SDL_Texture* GameoverTexture = NULL;
 SDL_Texture* RestartButtonTexture = NULL;
 SDL_Texture* scoreTexture=NULL;
 
-vector<SDL_Texture*> birds(6);
+vector<SDL_Texture*> birds(10);
 int selectedCharacterIndex=0;
 
 Mix_Chunk* gFlySound = NULL;
@@ -122,7 +123,7 @@ bool initGame() {
     RestartButtonTexture=IMG_LoadTexture(gRenderer,"restart.png");
 
     //load characters
-    for( int i=0;i<6;i++){
+    for( int i=0;i<int(birds.size());i++){
         string path="bird"+to_string(i+1)+".png";
         birds[i]=IMG_LoadTexture(gRenderer,path.c_str());
         if (!birds[i]) {
@@ -170,7 +171,7 @@ void closeGame() {
     SDL_DestroyTexture(GameoverTexture);
     SDL_DestroyTexture(RestartButtonTexture);
 
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < int(birds.size()); ++i) {
         SDL_DestroyTexture(birds[i]);
     }
 

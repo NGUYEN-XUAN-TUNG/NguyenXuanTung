@@ -8,7 +8,7 @@
 void updateScore(int score) {
     string scoreText = to_string(score);
     SDL_Color textColor = {255, 255, 255};
-    SDL_Surface* textSurface = TTF_RenderText_Blended(gFont, scoreText.c_str(), textColor);
+    SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, scoreText.c_str(), textColor);
     scoreTexture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
     scoreRect = {SCREEN_WIDTH/2,20, textSurface->w, textSurface->h};
     SDL_FreeSurface(textSurface);
@@ -62,6 +62,7 @@ void startNewGame(SDL_Event &e) {
     resetAllObs();
     render(e);
     playedDieSound = false;
+    scoreSaved=false;
 }
 void LoadCharacterSelectScreen() {
     SDL_Rect charBG = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
@@ -131,9 +132,9 @@ void renderCharacterSelection(SDL_Event &event) {
 
     if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
         if (x > 0 && x < 100 && y > 430 && y < 530) {
-            selectedCharacterIndex = (selectedCharacterIndex - 1 + 6) % 6;
+            selectedCharacterIndex = (selectedCharacterIndex - 1 + int(birds.size())) % int(birds.size());
         }else if (x > 400 && x < 500&& y > 430&& y < 530){
-            selectedCharacterIndex = (selectedCharacterIndex + 1) % 6;
+            selectedCharacterIndex = (selectedCharacterIndex + 1) % int(birds.size());
         }
     }
 
@@ -151,6 +152,7 @@ void renderinMenu(SDL_Event &event) {
         }
     }
     renderCharacterSelection(event);
+    isplaying=true;
     return;
     }
     if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
@@ -175,7 +177,6 @@ void pausing(SDL_Event &e) {
     if ((x > SCREEN_WIDTH - 50&& y < 50)||(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)) {
        paused_ = !paused_;
        isplaying=!isplaying;
-
     }
 }
 

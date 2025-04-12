@@ -54,8 +54,11 @@ int main(int argc, char* args[]) {
                 Mix_PlayChannel(-1, gDieSound, 0);
                 playedDieSound = true;
                 }
-                highscore=loadHighScore();
+                if(!scoreSaved){
                 saveScore(score);
+                highscore=loadHighScore();
+                scoreSaved=true;
+                }
                 LoadGameover();
             }
         }
