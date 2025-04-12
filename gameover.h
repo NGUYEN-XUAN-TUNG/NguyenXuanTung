@@ -24,27 +24,26 @@ void saveScore(int score) {
         file.close();
     }
 }
-
-void renderCenteredText(SDL_Renderer* renderer, TTF_Font* font, const string& text, int centerX, int y, SDL_Color color) {
-    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-
-    int textWidth = surface->w;
-    SDL_Rect dstRect = { centerX - textWidth / 2, y, textWidth, surface->h };
-
-    SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
-    SDL_FreeSurface(surface);
-    SDL_DestroyTexture(texture);
-}
 void showScoreScreen(SDL_Renderer* renderer, TTF_Font* font, int score, int highscore) {
     SDL_Color textColor = {0, 0, 0};
-    int centerX = 250;
-    int startY = 350;
-    string hs="High Score: "+to_string(highscore);
-    string ys="Your Score: "+to_string(score);
-    renderCenteredText(renderer, font, hs.c_str(), centerX, startY, textColor);
-    renderCenteredText(renderer, font, ys.c_str(), centerX, startY + 50, textColor);
+    string hs = "High Score: " + to_string(highscore);
+    string ys = "Your Score: " + to_string(score);
 
+    SDL_Surface* hsSurface = TTF_RenderText_Solid(font, hs.c_str(), textColor);
+    SDL_Texture* hsTexture = SDL_CreateTextureFromSurface(renderer, hsSurface);
+    int hsWidth = hsSurface->w;
+    SDL_Rect hsRect = { (SCREEN_WIDTH - hsWidth) / 2, 350, hsSurface->w, hsSurface->h };
+    SDL_RenderCopy(renderer, hsTexture, nullptr, &hsRect);
+    SDL_FreeSurface(hsSurface);
+    SDL_DestroyTexture(hsTexture);
+
+    SDL_Surface* ysSurface = TTF_RenderText_Solid(font, ys.c_str(), textColor);
+    SDL_Texture* ysTexture = SDL_CreateTextureFromSurface(renderer, ysSurface);
+    int ysWidth = ysSurface->w;
+    SDL_Rect ysRect = { (SCREEN_WIDTH - ysWidth) / 2, 350 + 50, ysSurface->w, ysSurface->h };
+    SDL_RenderCopy(renderer, ysTexture, nullptr, &ysRect);
+    SDL_FreeSurface(ysSurface);
+    SDL_DestroyTexture(ysTexture);
 }
 
 void LoadHome(){

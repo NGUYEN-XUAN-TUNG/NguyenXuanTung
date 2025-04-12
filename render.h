@@ -5,6 +5,16 @@
 #include"ObstacleDot.h"
 #include "ObstaclePipe.h"
 #include "gameover.h"
+void TaptoPlay(){
+    string ttp = "Tap to play!";
+    SDL_Color textColor = {255, 255, 255};
+    SDL_Surface* ttpSurface = TTF_RenderText_Solid(gFont, ttp.c_str(), textColor);
+    SDL_Texture* ttpTexture = SDL_CreateTextureFromSurface(gRenderer, ttpSurface);
+    SDL_Rect ttpRect = {(SCREEN_WIDTH - ttpSurface->w) / 2,500,ttpSurface->w,ttpSurface->h};
+    SDL_FreeSurface(ttpSurface);
+    SDL_RenderCopy(gRenderer, ttpTexture, nullptr, &ttpRect);
+    SDL_DestroyTexture(ttpTexture);
+}
 void updateScore(int score) {
     string scoreText = to_string(score);
     SDL_Color textColor = {255, 255, 255};
@@ -44,7 +54,9 @@ void render(SDL_Event &event) {
         SDL_Rect FlyAnimationPos = {FlyAnimationX, FlyAnimationY(), birdW, birdH};
         SDL_RenderCopy(gRenderer, gFlyAnimationTexture, NULL, &FlyAnimationPos);
     }
-    }else if (ready){SDL_RenderCopy(gRenderer, birds[selectedCharacterIndex], NULL, &BirdPos);}
+    }else if (ready){SDL_RenderCopy(gRenderer, birds[selectedCharacterIndex], NULL, &BirdPos);
+    TaptoPlay();
+    }
     if(!gameStarted)updateScore(0);
     SDL_RenderCopy(gRenderer, scoreTexture, NULL, &scoreRect);
     SDL_RenderPresent(gRenderer);
